@@ -1,6 +1,6 @@
 import random
 MAX_LIST = 72
-MAX_NUM = 12
+MAX_NUM = 20
 
 dict_reihe = list(range(MAX_NUM)) # [7]
 
