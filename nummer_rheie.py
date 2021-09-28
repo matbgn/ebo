@@ -1,6 +1,6 @@
 import random
 MAX_LIST = 72
-MAX_NUM = 20
+MAX_NUM = 40
 FACTOR_MAX_VAL = 12
 
 ONLY_MAX = True

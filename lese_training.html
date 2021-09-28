@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lesegeschwindigkeit & Dekodierungsgenauigkeit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-transition-group/dist/react-transition-group.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/react-mathjax@1.0.1/lib/index.min.js"></script>
+</head>
+<body>
+    <div id='app'></div>
+    <!-- Bootstrap Script-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+    <!-- MathJax-->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- React Script -->
+    <script type="text/babel">
+        const TitleComponent = () => {
+            return (
+                <div className="row">
+                    <div className="offset-3 col-4">
+                        <h1>Erfassungstexte</h1>
+                    </div>
+                    <div className="col-4">
+                        <KeyValuesComponent />
+                    </div>
+                </div>
+            )
+        }
+
+        class KeyValuesComponent extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    wordsTotal: 100
+                }
+            }
+            render() {
+                return (
+                    <div>
+                        Anzahl Wörter: {this.state.wordsTotal}
+                    </div>
+                )
+            }
+        }
+
+        const EvaluationComponent = () => {
+            return (
+                <form>
+                    <div className="row py-2">
+                        <div className="col d-flex justify-content-end align-items-end">
+                            <label htmlFor="inputName" className="form-label">Name Schüler / Schülerin</label>
+                        </div>
+                        <div className="col">
+                            <input type="text" className="form-control" id="inputName"/>
+                        </div>
+                    </div>
+                    <div className="row py-2">
+                        <div className="col d-flex justify-content-end align-items-end">
+                            <label htmlFor="inputDatum" className="form-label">Datum</label>
+                        </div>
+                        <div className="col">
+                            <input type="date" className="form-control" id="inputDatum"/>
+                        </div>
+                    </div>
+                    <div className="row py-2">
+                        <div className="col d-flex justify-content-end align-items-end">
+                            <label htmlFor="inputRightWordsPerMin" className="form-label">fehlerfrei gelesene Wörter pro Minute</label>
+                        </div>
+                        <div className="col">
+                            <input type="number" className="form-control" id="inputRightWordsPerMin"/>
+                        </div>
+                    </div>
+                    <div className="row py-2">
+                        <div className="col d-flex justify-content-end align-items-end">
+                            <label htmlFor="inputReadWordsPerMin" className="form-label">Anzahl gelesene Wörter pro Minute</label>
+                        </div>
+                        <div className="col">
+                            <input type="number" className="form-control" id="inputReadWordsPerMin"/>
+                        </div>
+                    </div>
+                    <div className="row py-2">
+                        <div className="col d-flex justify-content-end align-items-end">
+                            <label htmlFor="calculatePrecisionReading" className="form-label">Dekodiergenauigkeit in %</label>
+                        </div>
+                        <div className="col">
+                            <input type="number" className="form-control" id="calculatePrecisionReading" disabled/>
+                        </div>
+                    </div>
+                    <div className="row py-2">
+                        <div className="col d-flex justify-content-end align-items-end">
+                            <label htmlFor="inputReadWordsPerMin" className="form-label"></label>
+                        </div>
+                        <div className="col">
+                            <input type="number" className="form-control" id="inputReadWordsPerMin"/>
+                        </div>
+                    </div>
+                </form>
+            )
+        }
+
+        const MathComponent = () => {
+            const tex = `f(x) = \\int_{-\\infty}^\\infty
+                        \\hat f(\\xi)\\,e^{2 \\pi i \\xi x}
+                        \\,d\\xi`
+            return (
+                <MathJax.Provider>
+                    <div>
+                        This is an inline math formula: <MathJax.Node inline formula={'a = b'} />
+                        And a block one:
+
+                        <MathJax.Node formula={tex} />
+                    </div>
+                </MathJax.Provider>
+            )
+        }
+
+        const App = () => {
+            return (
+                <div className="container py-4">
+                    <TitleComponent />
+                    <EvaluationComponent />
+                </div>
+            )
+        }
+
+        ReactDOM.render(
+            <App />,
+            document.getElementById('app')
+        )
+    </script>
+</body>
+</html>
