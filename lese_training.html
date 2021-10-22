@@ -1,57 +1,91 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr_CH">
 <head>
     <meta charset="UTF-8">
     <title>Lesegeschwindigkeit & Dekodierungsgenauigkeit</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-transition-group/dist/react-transition-group.js" crossorigin></script>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-transition-group/dist/react-transition-group.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/react-mathjax@1.0.1/lib/index.min.js"></script>
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" rel="stylesheet">
 </head>
 <body>
-    <div id='app'></div>
-    <!-- Bootstrap Script-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
-    <!-- MathJax-->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <!-- React Script -->
-    <script type="text/babel">
-        const TitleComponent = () => {
+<div id='app'></div>
+<!-- Bootstrap Script-->
+<script crossorigin="anonymous"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- React Script -->
+<script type="text/babel">
+    class TitleComponent extends React.Component {
+        constructor(props) {
+            super(props);
+        }
+
+        render () {
             return (
-                <div className="row">
-                    <div className="offset-3 col-4">
+                <div className="row justify-content-center">
+                    <div className="col-2"></div>
+                    <div className="col-4">
                         <h1>Erfassungstexte</h1>
                     </div>
+                    <div className="col-1"></div>
                     <div className="col-4">
-                        <KeyValuesComponent />
+                        <KeyValuesComponent wordsNumber={this.props.wordsNumber}/>
                     </div>
                 </div>
             )
         }
+    }
 
-        class KeyValuesComponent extends React.Component {
-            constructor(props) {
-                super(props);
-                this.state = {
-                    wordsTotal: 100
-                }
-            }
-            render() {
-                return (
-                    <div>
-                        Anzahl Wörter: {this.state.wordsTotal}
-                    </div>
-                )
-            }
+    class KeyValuesComponent extends React.Component {
+        constructor(props) {
+            super(props);
         }
 
-        const EvaluationComponent = () => {
+        render() {
             return (
-                <form>
+                <div>
+                    Anzahl Wörter: {this.props.wordsNumber}
+                </div>
+            )
+        }
+    }
+
+    class EvaluationComponent extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                wordsReadWithoutErrorsPerMinute: 0,
+                numberOfWordsReadPerMinute: 0,
+                decodingAccuracy: 0,
+            }
+
+            this.updateInput = this.updateInput.bind(this)
+        }
+
+        updateInput(e) {
+            if (e.target.id == "inputReadWordsPerMin") {
+                this.setState({
+                    numberOfWordsReadPerMinute: e.target.value
+                })
+            } else {
+                this.setState({
+                    wordsReadWithoutErrorsPerMinute: e.target.value
+                })
+            }
+            this.setState((currentState) => {
+                return {
+                    decodingAccuracy: Math.round(currentState.wordsReadWithoutErrorsPerMinute / currentState.numberOfWordsReadPerMinute * 10000) / 100
+                }
+            })
+        }
+
+        render() {
+            return (
+                <div>
                     <div className="row py-2">
                         <div className="col d-flex justify-content-end align-items-end">
                             <label htmlFor="inputName" className="form-label">Name Schüler / Schülerin</label>
@@ -65,74 +99,207 @@
                             <label htmlFor="inputDatum" className="form-label">Datum</label>
                         </div>
                         <div className="col">
-                            <input type="date" className="form-control" id="inputDatum"/>
+                            <input type="text" className="form-control" id="inputDatum" />
                         </div>
                     </div>
                     <div className="row py-2">
                         <div className="col d-flex justify-content-end align-items-end">
-                            <label htmlFor="inputRightWordsPerMin" className="form-label">fehlerfrei gelesene Wörter pro Minute</label>
+                            <label htmlFor="inputRightWordsPerMin" className="form-label">fehlerfrei gelesene Wörter pro
+                                Minute</label>
                         </div>
                         <div className="col">
-                            <input type="number" className="form-control" id="inputRightWordsPerMin"/>
+                            <input type="number" min="0" className="form-control" id="inputRightWordsPerMin" value={this.state.wordsReadWithoutErrorsPerMinute} onChange={this.updateInput}/>
                         </div>
                     </div>
                     <div className="row py-2">
                         <div className="col d-flex justify-content-end align-items-end">
-                            <label htmlFor="inputReadWordsPerMin" className="form-label">Anzahl gelesene Wörter pro Minute</label>
+                            <label htmlFor="inputReadWordsPerMin" className="form-label">Anzahl gelesene Wörter pro
+                                Minute</label>
                         </div>
                         <div className="col">
-                            <input type="number" className="form-control" id="inputReadWordsPerMin"/>
+                            <input type="number" min="0" className="form-control" id="inputReadWordsPerMin" value={this.state.numberOfWordsReadPerMinute} onChange={this.updateInput}/>
                         </div>
                     </div>
                     <div className="row py-2">
                         <div className="col d-flex justify-content-end align-items-end">
-                            <label htmlFor="calculatePrecisionReading" className="form-label">Dekodiergenauigkeit in %</label>
+                            <label htmlFor="calculatePrecisionReading" className="form-label">Dekodiergenauigkeit in
+                                %</label>
                         </div>
                         <div className="col">
-                            <input type="number" className="form-control" id="calculatePrecisionReading" disabled/>
+                            <input type="number" className="form-control" id="calculatePrecisionReading" value={this.state.decodingAccuracy} disabled/>
                         </div>
                     </div>
-                    <div className="row py-2">
+                    <div className="row pt-1">
                         <div className="col d-flex justify-content-end align-items-end">
-                            <label htmlFor="inputReadWordsPerMin" className="form-label"></label>
-                        </div>
-                        <div className="col">
-                            <input type="number" className="form-control" id="inputReadWordsPerMin"/>
-                        </div>
-                    </div>
-                </form>
-            )
-        }
 
-        const MathComponent = () => {
-            const tex = `f(x) = \\int_{-\\infty}^\\infty
-                        \\hat f(\\xi)\\,e^{2 \\pi i \\xi x}
-                        \\,d\\xi`
-            return (
-                <MathJax.Provider>
-                    <div>
-                        This is an inline math formula: <MathJax.Node inline formula={'a = b'} />
-                        And a block one:
-
-                        <MathJax.Node formula={tex} />
+                        </div>
+                        <div className="col">
+                            <input type="checkbox" id="frustrationLevel" checked={(this.state.decodingAccuracy < 90 && this.state.decodingAccuracy > 0) ? true : false} disabled/>
+                            <label htmlFor="frustrationLevel" className="form-label m-2">
+                                Frustrationslevel (&lt; 90%)
+                            </label>
+                        </div>
                     </div>
-                </MathJax.Provider>
-            )
-        }
+                    <div className="row py-0">
+                        <div className="col d-flex justify-content-end align-items-end">
 
-        const App = () => {
-            return (
-                <div className="container py-4">
-                    <TitleComponent />
-                    <EvaluationComponent />
+                        </div>
+                        <div className="col">
+                            <input type="checkbox" id="frustrationLevel" checked={(this.state.decodingAccuracy < 96 && this.state.decodingAccuracy >= 90) ? true : false} disabled/>
+                            <label htmlFor="frustrationLevel" className="form-label m-2">
+                                Instruktionsniveau (90% - 95%)
+                            </label>
+                        </div>
+                    </div>
+                    <div className="row py-0">
+                        <div className="col d-flex justify-content-end align-items-end">
+
+                        </div>
+                        <div className="col">
+                            <input type="checkbox" id="frustrationLevel" checked={this.state.decodingAccuracy >= 96 ? true : false} disabled/>
+                            <label htmlFor="frustrationLevel" className="form-label m-2">
+                                unabhängiges Leselevel (96% - 100%)
+                            </label>
+                        </div>
+                    </div>
                 </div>
             )
         }
+    }
 
-        ReactDOM.render(
-            <App />,
-            document.getElementById('app')
-        )
-    </script>
+
+    class TextProofComponent extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                title: '',
+                proofText: ''
+            }
+
+            this.handleUpdateTitle = this.handleUpdateTitle.bind(this)
+            this.handleTextInput = this.handleTextInput.bind(this)
+        }
+
+        handleUpdateTitle (e) {
+            this.setState({
+                title: e.target.value
+            })
+        }
+
+        handleTextInput (e) {
+            this.setState(() => {
+                const textInArr =  e.target.value.match(/\S+/gm)
+                let tmpRes = ''
+                let tenthCounter = 1
+                for (let i = 0; i < textInArr.length ; i) {
+                    if (textInArr.length - i - 10 >= 0) {
+                        tmpRes += `${textInArr.slice(i, i+10).join(' ')}<sup>${tenthCounter * 10}</sup> `
+                        i = i + 10
+                        tenthCounter++
+                    } else {
+                        tmpRes += `${textInArr.slice(i, i+textInArr.length % 10).join(' ')}<sup>${(tenthCounter - 1) * 10 + textInArr.length % 10}</sup>`
+                        i = i + textInArr.length % 10
+                    }
+                }
+                let result = tmpRes
+                this.props.onWordsNumberChange((tenthCounter - 1) * 10 + textInArr.length % 10)
+                return {
+                    proofText: result
+                }
+            })
+        }
+
+        render() {
+            return (
+                <div>
+                    <div className="row my-3">
+                        <h2 id="TextTitle" className="col">
+                            {this.state.title}
+                        </h2>
+                        <div className="col-auto">
+
+                            <button type="button" className="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#newTextModal">
+                                Neu Text
+                            </button>
+
+
+                            <div className="modal fade" id="newTextModal" tabIndex="-1" aria-labelledby="newTextModalLabel"
+                                 aria-hidden="true">
+                                <div className="modal-dialog">
+                                    <div className="modal-content">
+                                        <div className="modal-header">
+                                            <h5 className="modal-title" id="newTextModalLabel">Neu Text</h5>
+                                            <button type="button" className="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div className="modal-body">
+                                            <div className="row py-2">
+                                                <div className="col-2 d-flex justify-content-end align-items-end">
+                                                    <label htmlFor="inputTitle" className="form-label">Title</label>
+                                                </div>
+                                                <div className="col">
+                                                    <input type="text" className="form-control" id="inputTitle" value={this.state.title} onChange={this.handleUpdateTitle}/>
+                                                </div>
+                                            </div>
+                                            <div className="row py-2">
+                                                <div className="col-2 d-flex justify-content-end align-items-end">
+                                                    <label htmlFor="inputProofText" className="form-label">Text</label>
+                                                </div>
+                                                <div className="col">
+                                                    <textarea rows="5" cols="40" className="form-control" id="inputProofText" onChange={this.handleTextInput}/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="modal-footer">
+                                            <button type="button" className="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div dangerouslySetInnerHTML={{ __html: this.state.proofText }}></div>
+                    </div>
+                </div>
+
+            )
+        }
+
+    }
+
+    class App extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                wordsNumber : 0
+            }
+            this.handleWordsNumberChange = this.handleWordsNumberChange.bind(this)
+        }
+
+        handleWordsNumberChange(wordsNumber) {
+            this.setState({wordsNumber})
+        }
+
+        render() {
+            return (
+                <div className="container py-4">
+                    <TitleComponent wordsNumber={this.state.wordsNumber}/>
+                    <EvaluationComponent/>
+                    <TextProofComponent wordsNumber={this.state.wordsNumber} onWordsNumberChange={this.handleWordsNumberChange}/>
+                </div>
+            )
+        }
+    }
+
+    ReactDOM.render(
+        <App/>,
+        document.getElementById('app')
+    )
+</script>
+
 </body>
 </html>
