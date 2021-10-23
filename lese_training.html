@@ -141,19 +141,19 @@
                         <div className="col">
                             <div className="row">
                                 <label htmlFor="frustrationLevel" className="form-label m-2">
-                                <input type="checkbox" id="frustrationLevel" checked={(this.state.decodingAccuracy < 90 && this.state.decodingAccuracy > 0) ? true : false} disabled/>
+                                <input type="checkbox" id="frustrationLevel" checked={(this.state.decodingAccuracy < 90 && this.state.decodingAccuracy > 0) ? true : false} readOnly/>
                                     &nbsp;Frustrationslevel (&lt; 90%)
                                 </label>
                             </div>
                             <div className="row">
                                 <label htmlFor="frustrationLevel" className="form-label m-2">
-                                <input type="checkbox" id="frustrationLevel" checked={(this.state.decodingAccuracy < 96 && this.state.decodingAccuracy >= 90) ? true : false} disabled/>
+                                <input type="checkbox" id="frustrationLevel" checked={(this.state.decodingAccuracy < 96 && this.state.decodingAccuracy >= 90) ? true : false} readOnly/>
                                     &nbsp;Instruktionsniveau (90% - 95%)
                                 </label>
                             </div>
                             <div className="row">
                                 <label htmlFor="frustrationLevel" className="form-label m-2">
-                                <input type="checkbox" id="frustrationLevel" checked={this.state.decodingAccuracy >= 96 ? true : false} disabled/>
+                                <input type="checkbox" id="frustrationLevel" checked={this.state.decodingAccuracy >= 96 ? true : false} readOnly/>
                                     &nbsp;unabhängiges Leselevel (96% - 100%)
                                 </label>
                             </div>
@@ -175,13 +175,13 @@
                     <div className="col">
                         <div className="row">
                             <label htmlFor="firstClassLevel" className="form-label m-2">
-                            <input type="checkbox" id="firstClassLevel" checked={(this.props.speed > 0 && this.props.speed < 50) ? true : false} disabled/>
+                            <input type="checkbox" id="firstClassLevel" checked={(this.props.speed > 0 && this.props.speed < 50) ? true : false} readOnly/>
                                 &nbsp;Ersten Klasse ~(25 bis 40 Wörter)
                             </label>
                         </div>
                         <div className="row">
                             <label htmlFor="thirdClassLevel" className="form-label m-2">
-                            <input type="checkbox" id="thirdClassLevel" checked={(this.props.speed >= 95 && this.props.speed < 140) ? true : false} disabled/>
+                            <input type="checkbox" id="thirdClassLevel" checked={(this.props.speed >= 95 && this.props.speed < 140) ? true : false} readOnly/>
                                 &nbsp;Dritten Klasse ~(105 bis 120 Wörter)
                             </label>
                         </div>
@@ -189,13 +189,13 @@
                     <div className="col">
                         <div className="row">
                             <label htmlFor="secondClassLevel" className="form-label m-2">
-                            <input type="checkbox" id="secondClassLevel" checked={(this.props.speed >= 50 && this.props.speed < 95) ? true : false} disabled/>
+                            <input type="checkbox" id="secondClassLevel" checked={(this.props.speed >= 50 && this.props.speed < 95) ? true : false} readOnly/>
                                 &nbsp;Zweiten Klasse ~(60 bis 85 Wörter)
                             </label>
                         </div>
                         <div className="row">
                             <label htmlFor="forthClassLevel" className="form-label m-2">
-                            <input type="checkbox" id="forthClassLevel" checked={(this.props.speed >= 140) ? true : false} disabled/>
+                            <input type="checkbox" id="forthClassLevel" checked={(this.props.speed >= 140) ? true : false} readOnly/>
                                 &nbsp;Vierten Klasse ~(140, besser 150 Wörter)
                             </label>
                         </div>
