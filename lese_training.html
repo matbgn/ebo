@@ -225,7 +225,12 @@
 
         handleTextInput (e) {
             this.setState(() => {
-                const textInArr =  e.target.value.match(/\S+/gm)
+                const textInArr =  e.target.value
+                                    .replaceAll('. ','. <br>')
+                                    .replaceAll('." ', '." <br>')
+                                    .replaceAll('! ', '! <br>')
+                                    .replaceAll('? ', '? <br>')
+                                    .match(/\S+/gm)
                 let tmpRes = ''
                 let tenthCounter = 1
                 for (let i = 0; i < textInArr.length ; i) {
@@ -238,7 +243,7 @@
                         i = i + textInArr.length % 10
                     }
                 }
-                let result = tmpRes.replaceAll('. ','. <br>').replaceAll('! ', '! <br>').replaceAll('? ', '? <br>')
+                let result = tmpRes
                 this.props.onWordsNumberChange((tenthCounter - 1) * 10 + textInArr.length % 10)
                 return {
                     proofText: result
