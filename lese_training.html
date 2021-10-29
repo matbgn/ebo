@@ -33,7 +33,10 @@
                     </div>
                     <div className="col-1"></div>
                     <div className="col-4">
-                        <KeyValuesComponent wordsNumber={this.props.wordsNumber}/>
+                        <KeyValuesComponent
+                            wordsNumber={this.props.wordsNumber}
+                            longWordsNumber={this.props.longWordsNumber}
+                            sentencesNumber={this.props.sentencesNumber}/>
                     </div>
                 </div>
             )
@@ -46,13 +49,14 @@
         }
 
         render() {
+            let lix = Math.round((this.props.wordsNumber/this.props.sentencesNumber + this.props.longWordsNumber/this.props.wordsNumber*100)*100)/100 || 0
             return (
                 <div>
                     <div>
                         Anzahl Wörter: {this.props.wordsNumber}
                     </div>
                     <div>
-                        Leseindex : <input type="number" size="1"/> <a href="https://www.psychometrica.de/lix.html" className="href" target="_blank">Calculator</a>
+                        Leseindex : {lix/* <input type="number" size="1"/> <a href="https://www.psychometrica.de/lix.html" className="href" target="_blank">Calculator</a>*/}
                     </div>
                 </div>
             )
@@ -245,6 +249,8 @@
                 }
                 let result = tmpRes
                 this.props.onWordsNumberChange((tenthCounter - 1) * 10 + textInArr.length % 10)
+                this.props.onLongWordsNumberChange(e.target.value.match(/\S+/gm).map(el => el.replace(/[\.!?:;,"]/gm, '')).filter(el => el.length > 6).length)
+                this.props.onSentencesNumberChange(e.target.value.match(/[A-Z].*?[\.!?]/gm).length)
                 return {
                     proofText: result
                 }
@@ -317,21 +323,37 @@
         constructor(props) {
             super(props);
             this.state = {
-                wordsNumber : 0
+                wordsNumber : 0,
+                sentencesNumber: 0,
+                longWordsNumber: 0
             }
             this.handleWordsNumberChange = this.handleWordsNumberChange.bind(this)
+            this.handleLongWordsNumberChange = this.handleLongWordsNumberChange.bind(this)
+            this.handleSentencesNumberChange = this.handleSentencesNumberChange.bind(this)
         }
 
         handleWordsNumberChange(wordsNumber) {
             this.setState({wordsNumber})
         }
 
+        handleLongWordsNumberChange(longWordsNumber) {
+            this.setState({longWordsNumber})
+        }
+
+        handleSentencesNumberChange(sentencesNumber) {
+            this.setState({sentencesNumber})
+        }
+
         render() {
             return (
                 <div className="container py-4">
-                    <TitleComponent wordsNumber={this.state.wordsNumber}/>
+                    <TitleComponent wordsNumber={this.state.wordsNumber}
+                                    longWordsNumber={this.state.longWordsNumber}
+                                    sentencesNumber={this.state.sentencesNumber}/>
                     <EvaluationComponent/>
-                    <TextProofComponent wordsNumber={this.state.wordsNumber} onWordsNumberChange={this.handleWordsNumberChange}/>
+                    <TextProofComponent wordsNumber={this.state.wordsNumber} onWordsNumberChange={this.handleWordsNumberChange}
+                                        onSentencesNumberChange={this.handleSentencesNumberChange}
+                                        onLongWordsNumberChange={this.handleLongWordsNumberChange}/>
                 </div>
             )
         }
