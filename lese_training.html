@@ -238,7 +238,7 @@
                         i = i + textInArr.length % 10
                     }
                 }
-                let result = tmpRes
+                let result = tmpRes.replaceAll('. ','. <br>').replaceAll('! ', '! <br>').replaceAll('? ', '? <br>')
                 this.props.onWordsNumberChange((tenthCounter - 1) * 10 + textInArr.length % 10)
                 return {
                     proofText: result
