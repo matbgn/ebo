@@ -117,7 +117,9 @@
                                 Minute</label>
                         </div>
                         <div className="col">
-                            <input type="number" min="0" className="form-control" id="inputRightWordsPerMin" value={this.state.wordsReadWithoutErrorsPerMinute} onChange={this.updateInput}/>
+                            <input type="number" min="0" className="form-control" id="inputRightWordsPerMin"
+                                   value={this.state.wordsReadWithoutErrorsPerMinute == 0 ? "" : this.state.wordsReadWithoutErrorsPerMinute}
+                                   onChange={this.updateInput}/>
                         </div>
                     </div>
                     <div className="row py-2">
@@ -126,7 +128,9 @@
                                 Minute</label>
                         </div>
                         <div className="col">
-                            <input type="number" min="0" className="form-control" id="inputReadWordsPerMin" value={this.state.numberOfWordsReadPerMinute} onChange={this.updateInput}/>
+                            <input type="number" min="0" className="form-control" id="inputReadWordsPerMin"
+                                   value={this.state.numberOfWordsReadPerMinute == 0 ? "" : this.state.numberOfWordsReadPerMinute}
+                                   onChange={this.updateInput}/>
                         </div>
                     </div>
                     <div className="row py-2">
@@ -135,7 +139,8 @@
                                 %</label>
                         </div>
                         <div className="col">
-                            <input type="number" className="form-control" id="calculatePrecisionReading" value={this.state.decodingAccuracy} readonly/>
+                            <input type="number" className="form-control" id="calculatePrecisionReading"
+                                   value={this.state.decodingAccuracy == 0 ? "" : this.state.decodingAccuracy} readonly/>
                         </div>
                     </div>
                     <div className="row pt-1">
