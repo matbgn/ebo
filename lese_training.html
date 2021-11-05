@@ -140,7 +140,7 @@
                         </div>
                         <div className="col">
                             <input type="number" className="form-control" id="calculatePrecisionReading"
-                                   value={this.state.decodingAccuracy == 0 ? "" : this.state.decodingAccuracy} readonly/>
+                                   value={this.state.decodingAccuracy == 0 ? "" : this.state.decodingAccuracy} readOnly/>
                         </div>
                     </div>
                     <div className="row pt-1">
@@ -240,6 +240,13 @@
                                     .replaceAll('! ', '! <br>')
                                     .replaceAll('? ', '? <br>')
                                     .match(/\S+/gm)
+
+                for (let i = 0; i < textInArr.length; i++) {
+                    textInArr[i] = `<span id="${i}" onclick="document.getElementById('${i}').style.color == 'red' ? document.getElementById('${i}').style.color = 'inherit' :
+                                    document.getElementById('${i}').style.color = 'red'"
+                                    ondblclick="document.getElementById('${i}').style.color = 'blue'">${textInArr[i]}</span>`
+                }
+
                 let tmpRes = ''
                 let tenthCounter = 1
                 for (let i = 0; i < textInArr.length ; i) {
