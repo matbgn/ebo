@@ -6,4 +6,4 @@ Maths tests for my daugther
     <td>:bulb:</td>
     <td>Maths tests for my daugther</td>
   </tr>
-</table
+</table>
