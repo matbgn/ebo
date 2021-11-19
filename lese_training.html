@@ -24,7 +24,7 @@
             super(props);
         }
 
-        render () {
+        render() {
             return (
                 <div className="row justify-content-center">
                     <div className="col-2"></div>
@@ -49,14 +49,15 @@
         }
 
         render() {
-            let lix = Math.round((this.props.wordsNumber/this.props.sentencesNumber + this.props.longWordsNumber/this.props.wordsNumber*100)*100)/100 || 0
+            let lix = Math.round((this.props.wordsNumber / this.props.sentencesNumber + this.props.longWordsNumber / this.props.wordsNumber * 100) * 100) / 100 || 0
             return (
                 <div>
                     <div>
                         Anzahl Wörter: {this.props.wordsNumber}
                     </div>
                     <div>
-                        Leseindex : {lix/* <input type="number" size="1"/> <a href="https://www.psychometrica.de/lix.html" className="href" target="_blank">Calculator</a>*/}
+                        Leseindex
+                        : {lix/* <input type="number" size="1"/> <a href="https://www.psychometrica.de/lix.html" className="href" target="_blank">Calculator</a>*/}
                     </div>
                 </div>
             )
@@ -66,30 +67,6 @@
     class EvaluationComponent extends React.Component {
         constructor(props) {
             super(props);
-            this.state = {
-                wordsReadWithoutErrorsPerMinute: 0,
-                numberOfWordsReadPerMinute: 0,
-                decodingAccuracy: 0,
-            }
-
-            this.updateInput = this.updateInput.bind(this)
-        }
-
-        updateInput(e) {
-            if (e.target.id == "inputReadWordsPerMin") {
-                this.setState({
-                    numberOfWordsReadPerMinute: e.target.value
-                })
-            } else {
-                this.setState({
-                    wordsReadWithoutErrorsPerMinute: e.target.value
-                })
-            }
-            this.setState((currentState) => {
-                return {
-                    decodingAccuracy: Math.round(currentState.wordsReadWithoutErrorsPerMinute / currentState.numberOfWordsReadPerMinute * 10000) / 100
-                }
-            })
         }
 
         render() {
@@ -108,7 +85,7 @@
                             <label htmlFor="inputDatum" className="form-label">Datum</label>
                         </div>
                         <div className="col">
-                            <input type="text" className="form-control" id="inputDatum" />
+                            <input type="text" className="form-control" id="inputDatum"/>
                         </div>
                     </div>
                     <div className="row py-2">
@@ -118,8 +95,8 @@
                         </div>
                         <div className="col">
                             <input type="number" min="0" className="form-control" id="inputRightWordsPerMin"
-                                   value={this.state.wordsReadWithoutErrorsPerMinute == 0 ? "" : this.state.wordsReadWithoutErrorsPerMinute}
-                                   onChange={this.updateInput}/>
+                                   value={this.props.wordsReadWithoutErrorNumber == 0 ? "" : this.props.wordsReadWithoutErrorNumber}
+                                   readOnly/>
                         </div>
                     </div>
                     <div className="row py-2">
@@ -129,8 +106,7 @@
                         </div>
                         <div className="col">
                             <input type="number" min="0" className="form-control" id="inputReadWordsPerMin"
-                                   value={this.state.numberOfWordsReadPerMinute == 0 ? "" : this.state.numberOfWordsReadPerMinute}
-                                   onChange={this.updateInput}/>
+                                   value={this.props.wordsReadNumber == 0 ? "" : this.props.wordsReadNumber} readOnly/>
                         </div>
                     </div>
                     <div className="row py-2">
@@ -140,29 +116,35 @@
                         </div>
                         <div className="col">
                             <input type="number" className="form-control" id="calculatePrecisionReading"
-                                   value={this.state.decodingAccuracy == 0 ? "" : this.state.decodingAccuracy} readOnly/>
+                                   value={this.props.decodingAccuracy == 0 ? "" : this.props.decodingAccuracy}
+                                   readOnly/>
                         </div>
                     </div>
                     <div className="row pt-1">
                         <div className="col">
-                            <SpeedAnalyser speed={this.state.numberOfWordsReadPerMinute}/>
+                            <SpeedAnalyser speed={this.props.wordsReadNumber}/>
                         </div>
                         <div className="col">
                             <div className="row">
                                 <label htmlFor="frustrationLevel" className="form-label m-2">
-                                <input type="checkbox" id="frustrationLevel" checked={(this.state.decodingAccuracy < 90 && this.state.decodingAccuracy > 0) ? true : false} readOnly/>
+                                    <input type="checkbox" id="frustrationLevel"
+                                           checked={(this.props.decodingAccuracy < 90 && this.props.decodingAccuracy > 0) ? true : false}
+                                           readOnly/>
                                     &nbsp;Frustrationslevel (&lt; 90%)
                                 </label>
                             </div>
                             <div className="row">
                                 <label htmlFor="frustrationLevel" className="form-label m-2">
-                                <input type="checkbox" id="frustrationLevel" checked={(this.state.decodingAccuracy < 96 && this.state.decodingAccuracy >= 90) ? true : false} readOnly/>
+                                    <input type="checkbox" id="frustrationLevel"
+                                           checked={(this.props.decodingAccuracy < 96 && this.props.decodingAccuracy >= 90) ? true : false}
+                                           readOnly/>
                                     &nbsp;Instruktionsniveau (90% - 95%)
                                 </label>
                             </div>
                             <div className="row">
                                 <label htmlFor="frustrationLevel" className="form-label m-2">
-                                <input type="checkbox" id="frustrationLevel" checked={this.state.decodingAccuracy >= 96 ? true : false} readOnly/>
+                                    <input type="checkbox" id="frustrationLevel"
+                                           checked={this.props.decodingAccuracy >= 96 ? true : false} readOnly/>
                                     &nbsp;unabhängiges Leselevel (96% - 100%)
                                 </label>
                             </div>
@@ -184,13 +166,17 @@
                     <div className="col">
                         <div className="row">
                             <label htmlFor="firstClassLevel" className="form-label m-2">
-                            <input type="checkbox" id="firstClassLevel" checked={(this.props.speed > 0 && this.props.speed < 50) ? true : false} readOnly/>
+                                <input type="checkbox" id="firstClassLevel"
+                                       checked={(this.props.speed > 0 && this.props.speed < 50) ? true : false}
+                                       readOnly/>
                                 &nbsp;Ersten Klasse ~(25 bis 40 Wörter)
                             </label>
                         </div>
                         <div className="row">
                             <label htmlFor="thirdClassLevel" className="form-label m-2">
-                            <input type="checkbox" id="thirdClassLevel" checked={(this.props.speed >= 95 && this.props.speed < 140) ? true : false} readOnly/>
+                                <input type="checkbox" id="thirdClassLevel"
+                                       checked={(this.props.speed >= 95 && this.props.speed < 140) ? true : false}
+                                       readOnly/>
                                 &nbsp;Dritten Klasse ~(105 bis 120 Wörter)
                             </label>
                         </div>
@@ -198,13 +184,16 @@
                     <div className="col">
                         <div className="row">
                             <label htmlFor="secondClassLevel" className="form-label m-2">
-                            <input type="checkbox" id="secondClassLevel" checked={(this.props.speed >= 50 && this.props.speed < 95) ? true : false} readOnly/>
+                                <input type="checkbox" id="secondClassLevel"
+                                       checked={(this.props.speed >= 50 && this.props.speed < 95) ? true : false}
+                                       readOnly/>
                                 &nbsp;Zweiten Klasse ~(60 bis 85 Wörter)
                             </label>
                         </div>
                         <div className="row">
                             <label htmlFor="forthClassLevel" className="form-label m-2">
-                            <input type="checkbox" id="forthClassLevel" checked={(this.props.speed >= 140) ? true : false} readOnly/>
+                                <input type="checkbox" id="forthClassLevel"
+                                       checked={(this.props.speed >= 140) ? true : false} readOnly/>
                                 &nbsp;Vierten Klasse ~(140, besser 150 Wörter)
                             </label>
                         </div>
@@ -222,47 +211,74 @@
                 proofText: ''
             }
 
+            this.handleUpdateError = this.handleUpdateError.bind(this)
             this.handleUpdateTitle = this.handleUpdateTitle.bind(this)
             this.handleTextInput = this.handleTextInput.bind(this)
         }
 
-        handleUpdateTitle (e) {
+        componentDidMount() {
+            document.addEventListener('click', this.handleUpdateError);
+        }
+
+        componentWillUnmount() {
+            document.removeEventListener('click', this.handleUpdateError);
+        }
+
+        handleUpdateError() {
+            if (document.getElementsByClassName('finish')[0]) {
+                const total = parseInt(document.getElementsByClassName('finish')[0].id, 10) + 1
+                this.props.onTotalWordsReadNumberChange(total)
+                this.props.onTotalWordsWithoutErrorChange(total - document.getElementsByClassName('error').length)
+            }
+        }
+
+        handleUpdateTitle(e) {
             this.setState({
                 title: e.target.value
             })
         }
 
-        handleTextInput (e) {
+        handleTextInput(e) {
             this.setState(() => {
-                const textInArr =  e.target.value
-                                    .replaceAll('. ','. <br>')
-                                    .replaceAll('." ', '." <br>')
-                                    .replaceAll('! ', '! <br>')
-                                    .replaceAll('? ', '? <br>')
-                                    .match(/\S+/gm)
+                const rawValue = e.target.value
+                const textInArr = rawValue
+                    .replaceAll('. ', '. <br>')
+                    .replaceAll('." ', '." <br>')
+                    .replaceAll('! ', '! <br>')
+                    .replaceAll('? ', '? <br>')
+                    .match(/\S+/gm)
 
                 for (let i = 0; i < textInArr.length; i++) {
-                    textInArr[i] = `<span id="${i}" onclick="document.getElementById('${i}').style.color == 'red' ? document.getElementById('${i}').style.color = 'inherit' :
-                                    document.getElementById('${i}').style.color = 'red'"
-                                    ondblclick="document.getElementById('${i}').style.color = 'blue'">${textInArr[i]}</span>`
+                    textInArr[i] = `<span id="${i}" onclick = "if (document.getElementById('${i}').style.color == 'red') {
+                                        document.getElementById('${i}').style.color = 'inherit';
+                                        document.getElementById('${i}').classList.remove('error');
+                                        document.getElementById('${i}').classList.remove('finish')
+                                    } else {
+                                        document.getElementById('${i}').style.color = 'red';
+                                        document.getElementById('${i}').classList.add('error')
+                                    }"
+                                    ondblclick="
+                                        document.getElementById('${i}').style.color = 'green';
+                                        document.getElementById('${i}').classList.add('finish')">
+                                    ${textInArr[i]}</span>`
                 }
 
                 let tmpRes = ''
                 let tenthCounter = 1
-                for (let i = 0; i < textInArr.length ; i) {
+                for (let i = 0; i < textInArr.length; i) {
                     if (textInArr.length - i - 10 >= 0) {
-                        tmpRes += `${textInArr.slice(i, i+10).join(' ')}<sup>${tenthCounter * 10}</sup> `
+                        tmpRes += `${textInArr.slice(i, i + 10).join(' ')}<sup>${tenthCounter * 10}</sup> `
                         i = i + 10
                         tenthCounter++
                     } else {
-                        tmpRes += `${textInArr.slice(i, i+textInArr.length % 10).join(' ')}<sup>${(tenthCounter - 1) * 10 + textInArr.length % 10}</sup>`
+                        tmpRes += `${textInArr.slice(i, i + textInArr.length % 10).join(' ')}<sup>${(tenthCounter - 1) * 10 + textInArr.length % 10}</sup>`
                         i = i + textInArr.length % 10
                     }
                 }
                 let result = tmpRes
                 this.props.onWordsNumberChange((tenthCounter - 1) * 10 + textInArr.length % 10)
-                this.props.onLongWordsNumberChange(e.target.value.match(/\S+/gm).map(el => el.replace(/[\.!?:;,"]/gm, '')).filter(el => el.length > 6).length)
-                this.props.onSentencesNumberChange(e.target.value.match(/[A-Z].*?[\.!?]/gm).length)
+                this.props.onLongWordsNumberChange(rawValue.match(/\S+/gm).map(el => el.replace(/[\.!?:;,"]/gm, '')).filter(el => el.length > 6).length)
+                this.props.onSentencesNumberChange(rawValue.match(/[A-Z].*?[\.!?]/gm) ? rawValue.match(/[A-Z].*?[\.!?]/gm).length : 1)
                 return {
                     proofText: result
                 }
@@ -284,7 +300,8 @@
                             </button>
 
 
-                            <div className="modal fade" id="newTextModal" tabIndex="-1" aria-labelledby="newTextModalLabel"
+                            <div className="modal fade" id="newTextModal" tabIndex="-1"
+                                 aria-labelledby="newTextModalLabel"
                                  aria-hidden="true">
                                 <div className="modal-dialog">
                                     <div className="modal-content">
@@ -299,7 +316,8 @@
                                                     <label htmlFor="inputTitle" className="form-label">Title</label>
                                                 </div>
                                                 <div className="col">
-                                                    <input type="text" className="form-control" id="inputTitle" value={this.state.title} onChange={this.handleUpdateTitle}/>
+                                                    <input type="text" className="form-control" id="inputTitle"
+                                                           value={this.state.title} onChange={this.handleUpdateTitle}/>
                                                 </div>
                                             </div>
                                             <div className="row py-2">
@@ -307,7 +325,8 @@
                                                     <label htmlFor="inputProofText" className="form-label">Text</label>
                                                 </div>
                                                 <div className="col">
-                                                    <textarea rows="5" cols="40" className="form-control" id="inputProofText" onChange={this.handleTextInput}/>
+                                                    <textarea rows="5" cols="40" className="form-control"
+                                                              id="inputProofText" onChange={this.handleTextInput}/>
                                                 </div>
                                             </div>
                                         </div>
@@ -322,7 +341,7 @@
                         </div>
                     </div>
                     <div>
-                        <div dangerouslySetInnerHTML={{ __html: this.state.proofText }}></div>
+                        <div dangerouslySetInnerHTML={{__html: this.state.proofText}}></div>
                     </div>
                 </div>
 
@@ -335,13 +354,37 @@
         constructor(props) {
             super(props);
             this.state = {
-                wordsNumber : 0,
+                wordsReadNumber: 0,
+                wordsReadWithoutErrorNumber: 0,
+                decodingAccuracy: 0,
+                wordsNumber: 0,
                 sentencesNumber: 0,
                 longWordsNumber: 0
             }
+            this.handleTotalWordsReadNumberChange = this.handleTotalWordsReadNumberChange.bind(this)
+            this.handleTotalWordsWithoutErrorChange = this.handleTotalWordsWithoutErrorChange.bind(this)
+            this.handleDecodingAccuracyChange = this.handleDecodingAccuracyChange.bind(this)
             this.handleWordsNumberChange = this.handleWordsNumberChange.bind(this)
             this.handleLongWordsNumberChange = this.handleLongWordsNumberChange.bind(this)
             this.handleSentencesNumberChange = this.handleSentencesNumberChange.bind(this)
+        }
+
+        handleTotalWordsReadNumberChange(wordsReadNumber) {
+            this.setState({wordsReadNumber})
+            this.handleDecodingAccuracyChange()
+        }
+
+        handleTotalWordsWithoutErrorChange(wordsReadWithoutErrorNumber) {
+            this.setState({wordsReadWithoutErrorNumber})
+            this.handleDecodingAccuracyChange()
+        }
+
+        handleDecodingAccuracyChange() {
+            this.setState((currentState) => {
+                return {
+                    decodingAccuracy: Math.round(currentState.wordsReadWithoutErrorNumber / currentState.wordsReadNumber * 10000) / 100
+                }
+            })
         }
 
         handleWordsNumberChange(wordsNumber) {
@@ -362,8 +405,13 @@
                     <TitleComponent wordsNumber={this.state.wordsNumber}
                                     longWordsNumber={this.state.longWordsNumber}
                                     sentencesNumber={this.state.sentencesNumber}/>
-                    <EvaluationComponent/>
-                    <TextProofComponent wordsNumber={this.state.wordsNumber} onWordsNumberChange={this.handleWordsNumberChange}
+                    <EvaluationComponent wordsReadNumber={this.state.wordsReadNumber}
+                                         wordsReadWithoutErrorNumber={this.state.wordsReadWithoutErrorNumber}
+                                         decodingAccuracy={this.state.decodingAccuracy}/>
+                    <TextProofComponent wordsNumber={this.state.wordsNumber}
+                                        onTotalWordsWithoutErrorChange={this.handleTotalWordsWithoutErrorChange}
+                                        onTotalWordsReadNumberChange={this.handleTotalWordsReadNumberChange}
+                                        onWordsNumberChange={this.handleWordsNumberChange}
                                         onSentencesNumberChange={this.handleSentencesNumberChange}
                                         onLongWordsNumberChange={this.handleLongWordsNumberChange}/>
                 </div>
