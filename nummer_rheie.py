@@ -52,4 +52,5 @@ for i in range(numberOfValues):
         if ALLOW_DUPLICATE:
             break
     tempDivisionList.append(sTmpValuesCouple)
-    print(iTmpDivision, "/", iTempVal, "=") if DIVISION else "" #,(iTmp - (iTmp % iValTmp))/iTmp)
+    print(iTmpDivision, "/", iTempVal, "=") if DIVISION else ""  # ,(iTmp - (iTmp % iValTmp))/iTmp)
+
