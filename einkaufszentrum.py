@@ -66,7 +66,7 @@ def create_an_entry():
     price = base_weight * multiplicative * 0.05 * random.randint(10, 100)
     print(f'Prix total : {"{:.3f}".format(price)} CHF')
     print(f'Poids total en {random.choice(("l.", "dl.", "cl.", "ml.")) if is_juice else random.choice(("kg.", "g."))} : ')
-    print(f'Prix au kilo : ')
+    print(f'Prix par {"litre" if is_juice else "kilo"} : ')
     print("{:.2f}".format(price/base_weight/multiplicative))
 
 
