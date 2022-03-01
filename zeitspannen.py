@@ -1,4 +1,5 @@
 import random
+from math import floor
 
 
 def create_journey():
@@ -10,7 +11,7 @@ def create_journey():
     print(f'Arrivée {str(hours_end).zfill(2)}:{str(minutes_end).zfill(2)}')
     delta = hours_end + minutes_end / 60 - hours_begin - minutes_begin / 60
     delta = delta if delta > 0 else 24 + delta
-    print(f'{"{:.0f}".format(delta)}h{str(int(round(delta % 1 * 6000)/100)).rjust(2, "0")}')
+    print(f'{"{:.0f}".format(floor(delta))}h{str(int(round(delta % 1 * 6000)/100)).rjust(2, "0")}')
 
 
 for i in range(9):
