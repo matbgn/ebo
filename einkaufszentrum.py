@@ -56,19 +56,49 @@ fruit = {
 }
 
 
-def create_an_entry():
+def create_an_entry(withAnswers=False):
     is_juice = bool(random.getrandbits(1))
-    article = f'\nJus de {random.sample(fruit, 1)[0]}' if is_juice else f'\n{random.sample(fruit, 1)[0]}'
-    print(article)
-    base_weight = random.randrange(10, 5000, 10)/1000.0
-    multiplicative = random.randint(1, 5)
-    print(f'Poids : {multiplicative} x {"{:.3f}".format(base_weight)} {"l." if is_juice else "kg."}')
-    price = base_weight * multiplicative * 0.05 * random.randint(10, 100)
-    print(f'Prix total : {"{:.3f}".format(price)} CHF')
-    print(f'Poids total en {random.choice(("l.", "dl.", "cl.", "ml.")) if is_juice else random.choice(("kg.", "g."))} : ')
-    print(f'Prix par {"litre" if is_juice else "kilo"} : ')
-    print("{:.2f}".format(price/base_weight/multiplicative))
+    article = f'Jus de {random.sample(fruit, 1)[0]}' if is_juice else f'{random.sample(fruit, 1)[0]}'
+    multiplicative = random.randint(3, 9)
+    designation = f'{multiplicative}x {article}'.ljust(38, " ")
+    base_weight = random.randrange(100, 5000, 100)/1000.0
+    weight_formatting = f'{"{:.3f}".format(base_weight)} {"l." if is_juice else "kg."}'.ljust(9, " ")
+    weight_by = random.choice(("dl.", "cl.", "ml.")) if is_juice else "g."
+    weight_by_formatting = f'.......... en {weight_by}'.ljust(17, " ")
+    price = base_weight * 3
+    price_formatting = f'{"{:.2f}".format(price)} CHF'.ljust(9, " ")
+    while True:
+        divider = random.choice((1.5, 2, 2.5, 3, 4, 5, 10))
+        weight_denominator = base_weight / divider
+        if "{:.3f}".format(weight_denominator)[-1:] == '0' and ("{:.2f}".format(price / divider)[-1:] == '0' or "{:.2f}".format(price / divider)[-1:] == '5'):
+            break
+    price_by_formatting = f'.......... CHF / {"{:.3f}".format(weight_denominator)} {"litre" if is_juice else "kilo"}'.ljust(28, " ")
+    line_total = f'Total : ............... CHF'
+    do_insert_backslash = "" if withAnswers else "\n"
+    print(f'{do_insert_backslash}{designation} | {weight_formatting} | {weight_by_formatting} | {price_formatting} | {price_by_formatting} | {line_total}')
+    switch = {
+        'g.': 1000,
+        'dl.': 10,
+        'cl.': 100,
+        'ml.': 1000,
+    }
+    if withAnswers:
+        answer_print_separator = " "
+        weight_by_answer = base_weight * switch.get(weight_by, "Invalid input")
+        init_space = "".rjust(56, answer_print_separator)
+        weight_by_answer_formatting = "{:.0f}".format(weight_by_answer).ljust(32, answer_print_separator)
+        divider_answer_formatting = f'({divider})'.ljust(24, answer_print_separator)
+        price_by_answer_formatting = f'{"{:.2f}".format(price / divider).ljust(14, answer_print_separator)}{divider_answer_formatting}'
+        total_answer = price * multiplicative
+        print(f'{init_space}{weight_by_answer_formatting}{price_by_answer_formatting}{"{:.2f}".format(total_answer)}')
+
+    return total_answer
 
 
+sum=0
 for i in range(5):
-    create_an_entry()
+    sum += create_an_entry(withAnswers=True)
+
+print(f'{"".rjust(114, " ")}{"".rjust(31, "=")}')
+print(f'\n{"".rjust(110, " ")}Grand Total : ............... CHF')
+print(f'{"".rjust(128, " ")}{"{:.2f}".format(sum)}')
