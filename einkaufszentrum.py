@@ -61,17 +61,17 @@ def create_an_entry(withAnswers=False):
     article = f'Jus de {random.sample(fruit, 1)[0]}' if is_juice else f'{random.sample(fruit, 1)[0]}'
     multiplicative = random.randint(3, 9)
     designation = f'{multiplicative}x {article}'.ljust(38, " ")
-    base_weight = random.randrange(100, 5000, 100)/1000.0
-    weight_formatting = f'{"{:.3f}".format(base_weight)} {"l." if is_juice else "kg."}'.ljust(9, " ")
-    weight_by = random.choice(("dl.", "cl.", "ml.")) if is_juice else "g."
-    weight_by_formatting = f'.......... en {weight_by}'.ljust(17, " ")
-    price = base_weight * 3
-    price_formatting = f'{"{:.2f}".format(price)} CHF'.ljust(9, " ")
     while True:
-        divider = random.choice((1.5, 2, 2.5, 3, 4, 5, 10))
+        base_weight = random.randrange(100, 5000, 100)/1000.0
+        price = base_weight * 3
+        divider = random.choice((1.5, 2.5, 3, 5))
         weight_denominator = base_weight / divider
         if "{:.3f}".format(weight_denominator)[-1:] == '0' and ("{:.2f}".format(price / divider)[-1:] == '0' or "{:.2f}".format(price / divider)[-1:] == '5'):
             break
+    weight_formatting = f'{"{:.3f}".format(base_weight)} {"l." if is_juice else "kg."}'.ljust(9, " ")
+    weight_by = random.choice(("dl.", "cl.", "ml.")) if is_juice else "g."
+    weight_by_formatting = f'.......... en {weight_by}'.ljust(17, " ")
+    price_formatting = f'{"{:.2f}".format(price)} CHF'.ljust(9, " ")
     price_by_formatting = f'.......... CHF / {"{:.3f}".format(weight_denominator)} {"litre" if is_juice else "kilo"}'.ljust(28, " ")
     line_total = f'Total : ............... CHF'
     do_insert_backslash = "" if withAnswers else "\n"
