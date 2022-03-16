@@ -70,12 +70,12 @@ def create_an_entry(withAnswers=False):
             break
     weight_formatting = f'{"{:.3f}".format(base_weight)} {"l." if is_juice else "kg."}'.ljust(9, " ")
     weight_by = random.choice(("dl.", "cl.", "ml.")) if is_juice else "g."
-    weight_by_formatting = f'.......... en {weight_by}'.ljust(17, " ")
     price_formatting = f'{"{:.2f}".format(price)} CHF'.ljust(9, " ")
+    weight_by_formatting = f'.......... en {weight_by}'.ljust(17, " ")
     price_by_formatting = f'.......... CHF / {"{:.3f}".format(weight_denominator)} {"litre" if is_juice else "kilo"}'.ljust(28, " ")
     line_total = f'Total : ............... CHF'
     do_insert_backslash = "" if withAnswers else "\n"
-    print(f'{do_insert_backslash}{designation} | {weight_formatting} | {weight_by_formatting} | {price_formatting} | {price_by_formatting} | {line_total}')
+    print(f'{do_insert_backslash}{designation} | {price_formatting} | {weight_formatting} | {weight_by_formatting} | {price_by_formatting} | {line_total}')
     switch = {
         'g.': 1000,
         'dl.': 10,
@@ -85,8 +85,8 @@ def create_an_entry(withAnswers=False):
     if withAnswers:
         answer_print_separator = " "
         weight_by_answer = base_weight * switch.get(weight_by, "Invalid input")
-        init_space = "".rjust(56, answer_print_separator)
-        weight_by_answer_formatting = "{:.0f}".format(weight_by_answer).ljust(32, answer_print_separator)
+        init_space = "".rjust(68, answer_print_separator)
+        weight_by_answer_formatting = "{:.0f}".format(weight_by_answer).ljust(20, answer_print_separator)
         divider_answer_formatting = f'({divider})'.ljust(24, answer_print_separator)
         price_by_answer_formatting = f'{"{:.2f}".format(price / divider).ljust(14, answer_print_separator)}{divider_answer_formatting}'
         total_answer = price * multiplicative
